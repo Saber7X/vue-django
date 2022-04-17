@@ -1,0 +1,134 @@
+{% load static %}
+{#{% load midia %}#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的第一个页面</title>
+    <link rel="stylesheet" href="{% static 'css/mystyle.css' %}" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    {#    <script src="js/axios.js"></script>#}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="home">
+    <div v-if=onOff>
+        <div class="header">
+            <h1>{{ siteinfo.title }}</h1>
+            <img src="/upload/{{ siteinfo.logo }}" alt="">
+        </div>
+
+        <hr/>
+
+
+        <div class="content">
+            <div class="menu">
+                <div v-if="item.id === choosed" v-for="item in classes" class="item"
+                     style="background: #777; color: aliceblue">
+                    <a>[[ item.text ]]</a>
+                </div>
+                <div v-else @click="chooseClass(item.id)" class="item">
+                    <a>[[ item.text ]]</a>
+                </div>
+            </div>
+
+            <div v-if="item.id === choosed" v-for="item in classes" class="userlist">
+                <p>[[item.text]]</p>
+                <hr>
+                <div v-if="item.userlist.length>0" v-for="user in item.userlist" class="user">
+                    <img src="/upload/userinfo/" alt="">
+                    <p>[[user.nickname]]</p>
+                </div>
+                <p v-else>暂无用户</p>
+
+            </div>
+        </div>
+    </div>
+    <input v-model="inputText" type="text" name="" id="" style="height:300px;width: 70px">
+    <p>[[ inputText ]]</p>
+    <hr>
+    <div class="foot">
+        Copyright © 2009-2022 WEIBO
+        <button @click="onOffClick">开关</button>
+        {# @就是v-on绑定事件，onOffClick应该就是事件名 #}
+    </div>
+
+
+</div>
+<script>
+    new Vue({
+        delimiters: ['[[', ']]'], {# 把渲染数据的大括号换成 #}
+        el: '#home',
+        data: {
+            inputText:'',
+            choosed: 1,
+            classes: [],
+            onOff: false,
+        },
+        mounted() {
+            this.getData()
+        },
+        methods: {
+            onOffClick() {
+                this.onOff = !this.onOff
+            },
+            getData() {
+                axios({
+                    url: '/api/',
+                    type: 'json',
+                    method: 'get'
+                }).then((res) => {
+                    console.log(res)
+                    this.classes = res.data.classes
+                })
+            },
+            chooseClass(id) {
+                this.choosed = id
+            }
+        }
+    })
+</script>
+</body>
+</html>
+{#    <p v-if="movies.length==0">尚未获取</p>#}
+{#    <div class="imglist">#}
+{#        <img v-for="img in movies" v-bind:src="apiurl+img.pic" alt="">#}
+{#    </div>#}
+{#    <button v-on:click="getData()">获取视频</button>#}
+
+{#        <div class="menu">#}
+{#            <div class="item">#}
+{#                <span>Django后端</span>#}
+{#            </div>#}
+{#            <div class="item">#}
+{#                <span>VueJs前端</span>#}
+{#            </div>#}
+{#            <div class="item">#}
+{#                <span>实战博客</span>#}
+{#            </div>#}
+{#            <div class="item">#}
+{#                <span>部署项目</span>#}
+{#            </div>#}
+{#new Vue({#}
+{#    {#    el: '#home',#}
+{#    {#    data: {#}
+{#    {#        apiurl: 'https://api.dweb.club/',#}
+{#    {#        movies: []#}
+{#    {#    },#}
+{#    {#    methods: {#}
+{#    {#        getData() {#}
+{#    {#            var self = this#}
+{#    {#            axios({#}
+{#    {#                method: 'get',#}
+{#    {#                type: 'json',#}
+{#    {#                url: 'https://api.dweb.club/dweb-api/get-index-data'#}
+{#    {#            }).then(function (res) {#}
+{#    {#                console.log(res.data.newsdata)#}
+{#    {#                self.movies = res.data.newsdata#}
+{#    {#            })#}
+{#    {#        }#}
+{#    {#    },#}
+{#    {##}
