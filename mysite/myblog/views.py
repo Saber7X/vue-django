@@ -19,6 +19,7 @@ def index(request):
     }
     return render(request, 'index.html', data)
 
+
 # 测试是否可以合并1
 # 测试是否可以合并2
 # 测试3
