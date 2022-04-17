@@ -21,6 +21,7 @@ def index(request):
 
 # 测试是否可以合并1
 # 测试是否可以合并2
+# 测试3
 def classes(request):
     # 基本信息
     global choose
